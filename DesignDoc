@@ -1,0 +1,54 @@
+What will our program need? : Option 1) We take the adresses given to us by the server, 
+
+Capacity Constraints - Number of cars, how much they can pick up.
+Time Windows - When and Where the packages need to be delivered.
+Places to go - A time matrix of different locations, hopefully delivered by google maps API
+
+
+What will our program do? :
+
+What libraries do you think will be useful? :
+
+What are the decisions that must be taken? : Time vs Precision, 
+
+
+Inputs-
+
+Distance matrix, data['distance_matrix'] = [[num],[num]]. (To get this, see https://developers.google.com/optimization/routing/vrp#distance_matrix_api)
+data['num_vehicles'] = 4
+data['depot'] = 0 // (which of the distances is the central hub)
+demands -  volume of the customer's request
+capacities- how much  volume the car can hold 
+time windows- When the customer is available to recieve the package - A pain, but can be done.
+num_locations??
+slack_max -> How long they wait in each home, at max.
+depot_capacity 
+vehicle_load_time
+vehicle_unload_time
+
+
+Functions -
+
+Distance_Callback -> Returns the distance between two nodes (takes it from the matrix)
+Distance Dimension -> Computes the cumulative distance traveled
+Solution_Printer-> Prints the solution to console (We're going to modify this to output a JSON)
+//
+
+data ={}
+has: distance_matrix, num_locations, num_vehicles, depot
+
+
+
+Step 1: https://developers.google.com/optimization/routing/vrp and https://developers.google.com/optimization/routing/vrp#distance_matrix_api
+Step 2: We need to add CVRP afterwards (capacity, some packages heavier, etc) https://developers.google.com/optimization/routing/cvrp
+Step 3: We add time windows to our demands if needed (https://developers.google.com/optimization/routing/vrptw)
+Step 4: Resource Constraints (Loading, mostly) (https://developers.google.com/optimization/routing/cvrptw_resources)
+Step 5: Do we need to add drop penalties? Do we even drop packages? - Might have to when we add time windows.
+Step 6: Search limits, solution limits, time limits. Do we want to input an initial route? Probably not, but who knows?
+
+
+Q:
+
+How does accessing a file work in a server?
+
+
