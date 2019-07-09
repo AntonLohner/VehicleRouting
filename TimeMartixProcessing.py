@@ -47,14 +47,14 @@ def main():
         True,  # start cumul to zero
         'Capacity')
     # Lets the solution drop nodes if necessary.
-    penalty = 1000
+    penalty = 900000
     for node in range(1, len(data['time_matrix'])):
         routing.AddDisjunction([manager.NodeToIndex(node)], penalty)
 
     routing.AddDimension(
         transit_callback_index,
-        30,  # allow waiting time
-        30,  # maximum time per vehicle
+        30000,  # allow waiting time
+        30000,  # maximum time per vehicle
         False,  # Don't force start cumul to zero.
         'Time')
     time_dimension = routing.GetDimensionOrDie('Time')
