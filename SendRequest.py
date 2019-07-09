@@ -21,6 +21,6 @@ def send_request(origin_addresses, dest_addresses, API_key):
     json_data = response.json()
     return json_data
     # Appends addresses to a single string, adding | in between.
-    # TODO: We need to add an exponential back off delay, or at least a flat one.
+    # TODO: We need to add an exponential back off delay, if the flat one takes too long.
 
 

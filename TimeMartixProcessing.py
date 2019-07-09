@@ -78,7 +78,7 @@ def main():
             time_dimension.CumulVar(routing.End(i)))
 
     # TODO: Understand this constraint, because it's breaking the 2nd example while being part of the 1st. I don't think
-    # TODO: this constraint is going to be important, as it'll be overshadowed by both capacity and delivery timing.
+    # TODO: this constraint isn't going to be important, as it'll be overshadowed by both capacity and delivery timing.
     '''# Add Time constraint.
     dimension_name = 'Time'
     routing.AddDimension(

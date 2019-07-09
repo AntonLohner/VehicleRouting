@@ -40,6 +40,9 @@ def print_solution(data, manager, routing, solution):
     time_dimension = routing.GetDimensionOrDie('Time')
     total_time = 0
     total_load = 0
+    i = 0
+    color = ["0xFF0000FF", "0x666666FF", "0x38761DFF", "0x674EA7FF", "0x783F04FF", "0x0000FFFF", "0xFFFF00FF",
+             "0x134F5CFF"]
     for vehicle_id in range(data['num_vehicles']):
         index = routing.Start(vehicle_id)
         plan_output = 'Route for vehicle {}:\n'.format(vehicle_id)
@@ -54,10 +57,15 @@ def print_solution(data, manager, routing, solution):
                 manager.IndexToNode(index), solution.Min(time_var),
                 solution.Max(time_var))
             if new_path is True:
-                paths = paths + "&path=color:0x0000ff%7Cweight:5"
+                paths = paths + "&path=color:{}%7Cweight:5\n".format(color[i])
+                i = i + 1
+                if i == 8:
+                    i = 0
                 new_path = False
             paths = paths + "%7C{}\n".format(tempdata[str(manager.IndexToNode(index))])
             # We create the paths here.
+            # TODO: Consider adding the final return to the hub. Better colour? Transparency? They might want a dynamic
+            # map instead.
             previous_index = index
             index = solution.Value(routing.NextVar(index))
             route_time += routing.GetArcCostForVehicle(

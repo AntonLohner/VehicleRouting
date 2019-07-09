@@ -52,3 +52,17 @@ Q:
 How does accessing a file work in a server?
 
 
+
+Static Map vs Javascript Map
+
+In order to visualize the routing
+
+https://developers.google.com/maps/documentation/javascript/examples/directions-simple
+https://developers.google.com/maps/documentation/javascript/examples/directions-complex
+gives us an example of a javascript map with directions
+i'm worried that having so many directions at the same time will either cause massive request amounts, or be unfeasible. 
+
+Zoom of 10 or 11. The markers will zoom it in anyways, but it's good to have a good start.
+Center at our location usually. In our example we'll use the hub there, but it'll be the static enviaflores place 
+
+
