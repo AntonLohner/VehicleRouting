@@ -1,12 +1,12 @@
 import math
 from SendRequest import send_request
 from MatrixBuilder import build_distance_matrix
+from key import key1
 
 
 def create_distance_matrix(data):
-    key = "AIzaSyATq8bhhn73jqukR0xqpRcWafNLeldMoYo"
+    key = key1
     # TODO: REPLACE THE KEY
-
     # We have a maximum of 100 elements per request, so we're splitting the rows to fit that restriction
     # TODO: When data is replaced, this will change
     addresses = data
@@ -27,8 +27,5 @@ def create_distance_matrix(data):
         response = send_request(origin_addresses, data, key)
         distance_matrix += build_distance_matrix(response)
     return distance_matrix
-
-
-
 
 
