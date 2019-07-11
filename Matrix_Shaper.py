@@ -26,10 +26,13 @@ def matrix_shaper(base_matrix, i, q, request):
     response = requests.get(request)
     json_data = response.json()
     for row in json_data['rows']:
-        for j in range(10):
-            j = j
+        for j in range(len(json_data['destination_addresses'][:])):
             duration = [row['elements'][j]['duration']['value']]
-            base_matrix[i-9+incremental_counter, q-9+j] = duration
-            base_matrix[q-9+j, i-9+incremental_counter] = duration
+            base_matrix[i-9+incremental_counter, q-9+j] = duration[0]
+            base_matrix[q-9+j, i-9+incremental_counter] = duration[0]
+            if base_matrix[i-9+incremental_counter, q-9+j] > -1:
+                print("Replaced something that wasn't 0. Horizontal.")
+            if base_matrix[q - 9 + j, i - 9 + incremental_counter] > -1:
+                print("Replaced something that wasn't 0. Vertical.")
         incremental_counter = incremental_counter + 1
     return base_matrix

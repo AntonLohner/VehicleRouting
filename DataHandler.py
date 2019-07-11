@@ -3,16 +3,20 @@ from key import key1
 import numpy
 from numpy import sys
 from Matrix_Shaper import matrix_shaper
+from key import key1
 
-key = ""
+
+key = key1
 Coords = ['25.680723,-100.365837']
 with open('pedidos05_Julio_2019.json') as json_file:
     data = json.load(json_file)
     for p in data['records']:
-        print('horario:' + p['horario'])
-        print('')
+
         if p['datt_lat'] != '':
             Coords.append(p['datt_lat'] + ',' + p['datt_lon'])
+            '''
+            print('horario:' + p['horario'])
+            '''
     # We insert the hub coordinates to the beginning.
     Coords.insert(0, "25.680723,-100.365837")
     print(Coords)
