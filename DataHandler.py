@@ -53,7 +53,7 @@ with open('pedidos05_Julio_2019.json') as json_file:
                               '&key=' + key
                     print(i, q)
                     print(request)
-                    matrix = matrix_shaper(matrix, i, q, request)
+                    matrix = matrix_shaper(matrix, i, q, request, destination_count, origin_count)
                     request = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
                     destination_addresses = ""
                     destination_count = 0
@@ -63,7 +63,7 @@ with open('pedidos05_Julio_2019.json') as json_file:
                           + key
                 print(i, q)
                 print(request)
-                matrix = matrix_shaper(matrix, i, q, request)
+                matrix = matrix_shaper(matrix, i, q, request, destination_count, origin_count)
                 request = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
                 destination_addresses = ""
                 destination_count = 0
@@ -84,7 +84,7 @@ with open('pedidos05_Julio_2019.json') as json_file:
                           + key
                 print(i, q)
                 print(request)
-                matrix = matrix_shaper(matrix, i, q, request)
+                matrix = matrix_shaper(matrix, i, q, request, destination_count, origin_count)
                 request = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
                 destination_addresses = ""
                 destination_count = 0
@@ -93,7 +93,7 @@ with open('pedidos05_Julio_2019.json') as json_file:
             request = request + '&origins=' + origin_addresses + '&destinations=' + destination_addresses + '&key=' +\
                       key
             print(i, q)
-            matrix = matrix_shaper(matrix, i, q, request)
+            matrix = matrix_shaper(matrix, i, q, request, destination_count, origin_count)
             print(request)
             request = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
             destination_addresses = ""

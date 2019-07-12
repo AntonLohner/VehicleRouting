@@ -20,19 +20,25 @@ print(type(matrix))
 '''
 
 
-def matrix_shaper(base_matrix, i, q, request):
+def matrix_shaper(base_matrix, i, q, request, destination_count, origin_count):
+    x = 1
     incremental_counter = 0
-    time.sleep(.1)
+    time.sleep(.1/4)
+    # TODO: The sleep time can go lower or higher depending on how long the code takes to execute.
     response = requests.get(request)
     json_data = response.json()
     for row in json_data['rows']:
         for j in range(len(json_data['destination_addresses'][:])):
             duration = [row['elements'][j]['duration']['value']]
-            base_matrix[i-9+incremental_counter, q-9+j] = duration[0]
-            base_matrix[q-9+j, i-9+incremental_counter] = duration[0]
-            if base_matrix[i-9+incremental_counter, q-9+j] > -1:
-                print("Replaced something that wasn't 0. Horizontal.")
-            if base_matrix[q - 9 + j, i - 9 + incremental_counter] > -1:
-                print("Replaced something that wasn't 0. Vertical.")
+            while json_data['rows'][0]['elements'][0]['status'][:] != 'OK':
+                print("Status is not OK:", i, q)
+                time.sleep(2**x)
+                response = requests.get(request)
+                json_data = response.json()
+                x = x + 1
+                if x == 5:
+                    break
+            base_matrix[i-origin_count+incremental_counter, q-destination_count+j] = duration[0]
+            base_matrix[q-destination_count+j, i-origin_count+incremental_counter] = duration[0]
         incremental_counter = incremental_counter + 1
     return base_matrix
