@@ -1,10 +1,11 @@
 import requests
 import time
 import json
-from link import link
+import link
 
+'''
 def city_placer(lat, long):
-    request = "link.format(str(long), str(lat))
+    request = link.format(str(long), str(lat))
     response = requests.get(request)
     json_data = response.json()
     x = 1
@@ -27,3 +28,4 @@ with open('pedidos05_Julio_2019_backup.json') as json_file:
             CityList.append(city_placer(Lat, Long))
 print(CityList)
 
+'''
