@@ -4,10 +4,10 @@ from mpl_toolkits.basemap import Basemap
 from test2 import A
 
 
-def basemap_plotter(lons, lats):
+def basemap_plotter():
     # draws a merc map projection, a high resolution square limited by two of its corners- lower left and up right.
     map = Basemap(projection='merc', lat_0=25.4, lon_0=-100.3, resolution='h',
-                  llcrnrlon=-100.6, llcrnrlat=24.9,
+                  llcrnrlon=-100.6, llcrnrlat=25.5,
                   urcrnrlon=-100.1, urcrnrlat=25.9, epsg=3857
                   )
     # For other map options, see: http://server.arcgisonline.com/arcgis/rest/services
@@ -16,12 +16,8 @@ def basemap_plotter(lons, lats):
     map.drawcoastlines(linewidth=0.25)
     map.drawcountries(linewidth=0.25)
     map.drawstates(linewidth=0.25)
-    x, y = map(lons, lats)
-    map.arcgisimage(service='World_Street_Map', xpixels=2500, verbose=True)
-    map.plot(x, y, 'bo', markersize=2)
 
-    plt.show()
-
+    return map
 
 
 
