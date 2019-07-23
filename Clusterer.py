@@ -49,13 +49,22 @@ plt.show()
 
 basemap = basemap_plotter()
 
-for idx, centroid in enumerate(centroids):
-    centroid_lons.append(float(centroids[0][0].item()))
-    centroid_lats.append(float(centroids[0][1].item()))
-x, y = basemap(centroid_lons, centroid_lats)
-basemap.plot(x, y, markersize=10)
-plt.show()
+
+for i in centroids:
+    print(i)
+    centroid_lons.append(float(i[0].item()))
+    centroid_lats.append(float(i[1].item()))
+
 x, y = basemap(lons, lats)
-basemap.plot(x, y, 'bo', markersize=2)
-# basemap.arcgisimage(service='World_Street_Map', xpixels=2500, verbose=True)
+#basemap.plot(x, y, 'bo', markersize=2)
+plt.scatter(x, y, color=colors, alpha=0.5, edgecolor='k')
+print(centroid_lons)
+print(centroid_lats)
+x, y = basemap(centroid_lats, centroid_lons)
+print(x, y)
+i = 0
+while i < 3:
+    plt.scatter(x[i], y[i], color=colmap[i+1])
+    i = i + 1
+basemap.arcgisimage(service='World_Street_Map', xpixels=2500, verbose=True)
 plt.show()
