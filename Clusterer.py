@@ -11,17 +11,14 @@ lats = []
 centroid_lons = []
 centroid_lats = []
 
-#TODO: Remember the data will be split by hour.
+# TODO: Remember the data will be split by hour.
 for i in A["records"]:
     if i['datt_lon'] == "":
         ""
     else:
-        if float(i['datt_lat']) > 23:
-            if float(i['datt_lat']) < 27:
-                if float(i['datt_lon']) < -97:
-                    if float(i['datt_lon']) > -103:
-                        lons.append(float(i['datt_lon']))
-                        lats.append(float(i['datt_lat']))
+        if 23 < float(i['datt_lat']) < 27 and -97 > float(i['datt_lon']) > -103:
+            lons.append(float(i['datt_lon']))
+            lats.append(float(i['datt_lat']))
 # Set the problem. Add the target coordinates. These will be lats/longs, I assume.
 # Currently, this more or less targets the coordinates that qualify inside Mty
 
@@ -30,23 +27,21 @@ df = pd.DataFrame({
     'y': lons
 })
 # Calculates the amount of clusters we want
-k = math.ceil(len(lats)/20)
+num_clusters = math.ceil(len(lats)/20)
 # Splits the data into the clusters
-kmeans = KMeans(n_clusters=k, n_jobs=1)
+kmeans = KMeans(n_clusters=num_clusters, n_jobs=1)
 # TODO: Optional due to google api restriction forcing us to overfit: Use elbow method to predict n_clusters
 kmeans.fit(df)
 
 labels = kmeans.predict(df)
 centroids = kmeans.cluster_centers_
-
-colmap = {1: 'r', 2: 'g', 3: 'b', 4: 'y', 5: 'm', 6: 'c', 7: 'k', 8: 'w', 9: 'r', 10: 'g', 11: 'r', 12: 'g', 13: 'b',
-          14: 'y', 15: 'm', 16: 'c', 17: 'k', 18: 'w', 19: 'r', 20: 'g', 21: 'g'}
+colmap = {1: 'r', 2: 'g', 3: 'b', 4: 'y', 5: 'm', 6: 'c', 7: 'k', 8: 'w', 9: 'r', 10: 'g', 11: 'b', 12: 'y', 13: 'm',
+          14: 'c', 15: 'k', 16: 'w', 17: 'r', 18: 'g', 19: 'b', 20: 'y', 21: 'm'}
 fig = plt.figure(figsize=(5, 5))
-colors = list(map(lambda x: colmap[x+1], labels))
 
 # Cluster dictionary allows us to see if the clusters are too big or small
 cluster_dict = {}
-for i in range(0, int(k)):
+for i in range(0, int(num_clusters)):
     cluster_dict.update({i: 0})
 for i in labels:
     cluster_dict[i] += 1
@@ -57,7 +52,7 @@ splitter_list = []
 target_list = []
 for i in cluster_dict:
     if cluster_dict[i] < 5:
-        print("Target acquired")
+        print("Cluster too small")
         print(i)
         target_list.append(i)
     if cluster_dict[i] > 30:
@@ -70,26 +65,59 @@ counter = 0
 # Iterates through labels. The first for deletes the target clusters, while the second one splits the big ones into
 # Clusters of hopefully 20-30. If a cluster was bigger than 50 we'd be in trouble, but we're handling data sets of
 # about 100, so the odds of that are... pretty much 0. Something TODO: If time allows.
+big_node_lats = []
+big_node_lons = []
 
-for i in labels:
+centroids = centroids.tolist()
+print(centroids)
+global_list = splitter_list + target_list
+global_list.sort()
+print(global_list)
+i = len(global_list)
+while i > 0:
+    del centroids[global_list[i-1]]
+    i = i - 1
+print(centroids)
+
+print(labels)
+while i < len(labels):
     for x in target_list:
-        if int(i) == x:
-            del labels[counter]
-            del lons[counter]
-            del lats[counter]
-            del colors[counter]
-    y = 0
-    while y < len(splitter_list):
-        if int(i) == splitter_list[y]:
-            if cluster_dict[int(i)] > 20:
-                cluster_dict[y] = cluster_dict[y]-1
-                labels[counter] = k+y
-                # This allows you to visualize the splitting of nodes:
-                colors[counter] = colmap[k+y+1]
-        y = y + 1
+        if labels[i] == x:
+            #print("delet this")
+            # TODO: Note the fallen
+            del labels[i]
+            del lons[i]
+            del lats[i]
+            i = i - 1
+    for y in splitter_list:
+        if labels[i] == y:
+            #print("The bigger they are, the harder they fall.")
+            big_node_lons.append(lons[i])
+            big_node_lats.append(lats[i])
+            # This is the part where we do stuff
+            del labels[i]
+            del lons[i]
+            del lats[i]
+            i = i - 1
     counter = counter + 1
+    i = i + 1
+print(labels)
 
+# We create two clusters out of the big clusters, in order to reduce the number of addresses required in the google API.
+# TODO: If we have the time, i'd like to just have it iterate infinitely as long as it doesn't create clusters that are
+# TODO: small enough.
+df2 = pd.DataFrame({
+    'x': big_node_lats,
+    'y': big_node_lons
+})
 
+colors = list(map(lambda x: colmap[x+1], labels))
+
+kmeans2 = KMeans(n_clusters=len(splitter_list)*2, n_jobs=1)
+kmeans2.fit(df2)
+labels2 = kmeans2.predict(df2)
+centroids2 = kmeans2.cluster_centers_
+colors2 = list(map(lambda x: colmap[x+1], labels2))
 
 # Sets the lat and long coordinates we're going to be looking at.
 plt.ylim([-100.6, -100.1])
@@ -99,26 +127,50 @@ basemap = basemap_plotter()
 
 # Marks the centroid's latitudes and longitudes
 for i in centroids:
-    centroid_lons.append(float(i[0].item()))
-    centroid_lats.append(float(i[1].item()))
+    centroid_lons.append(i[0])
+    centroid_lats.append(i[1])
+
+# Same, but for the smaller centroids.
+centroid2_lons = []
+centroid2_lats = []
+
+for i in centroids2:
+    centroid2_lons.append(float(i[0].item()))
+    centroid2_lats.append(float(i[1].item()))
 
 # Plots the regular coordinates
 x, y = basemap(lons, lats)
 # Colors them depending on what cluster they're in
 plt.scatter(x, y, color=colors, alpha=0.5, edgecolor='k')
 
+# Plots the big node coordinates
+x, y = basemap(big_node_lons, big_node_lats)
+# Colors em!
+plt.scatter(x, y, color=colors2, alpha=0.5, edgecolor='k')
+
+#print(cluster_dict)
+#{0: 12, 1: 14, 2: 35, 3: 11, 4: 9, 5: 11, 6: 17, 7: 35, 8: 26, 9: 13, 10: 47, 11: 3, 12: 10, 13: 18, 14: 5, 15: 20, 16: 25, 17: 34}
+#[2, 7, 10, 11, 17]
+#print(global_list)
+
 # Plots the nodes
 x, y = basemap(centroid_lats, centroid_lons)
 i = 0
-while i < math.ceil(len(lats)/20):
-    plt.scatter(x[i], y[i], s=100, color=colmap[i+1], marker="v")
+w = 0
+while i < len(centroid_lats):
+    for z in global_list:
+        if z == w:
+            w = w + 1
+    plt.scatter(x[i], y[i], s=100, color=colmap[w+1], marker="v")
     i = i + 1
+    w = w + 1
 
-# Adds a fancy map background :0
-basemap.arcgisimage(service='World_Street_Map', xpixels=2500, verbose=False)
-# TODO: This is a really neat way to draw lines. Might be useful very soon. basemap.plot(x, y)
-# TODO: Ask how aggressive we want to be in dropping the points that are very far away.
-# TODO: Repeating the clustering 10x and dropping each time would work.
+# Plots the big nodes
+x, y = basemap(centroid2_lats, centroid2_lons)
+i = 0
+while i < len(centroid2_lats):
+    plt.scatter(x[i], y[i], s=90, color=colmap[i+1], marker="v")
+    i = i + 1
 
 # The coord dictionary will help us know which nodes have which coordinates.
 coord_dict = {}
@@ -128,4 +180,14 @@ for i in range(0, len(lats)):
     coord_dict[labels[i]].append([lats[i], lons[i]])
 
 # print(coord_dict)
+
+# Adds a fancy map background :0
+basemap.arcgisimage(service='World_Street_Map', xpixels=2500, verbose=False)
+# TODO: This is a really neat way to draw lines. Might be useful very soon. basemap.plot(x, y)
+# TODO: Ask how aggressive we want to be in dropping the points that are very far away.
+# TODO: Repeating the clustering 10x and dropping each time would work.
+
 plt.show()
+
+# TODO: If time, we need to split the city into geographic centers.
+# TODO: More useful, try to split the big clusters using iterations
