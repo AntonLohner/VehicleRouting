@@ -19,7 +19,7 @@ def group_maker():
     json_data = response.json()
     if json_data['result'] != "ok":
         print("Request result failed")
-    #print(json_data)
+    print(json_data)
     # workshop_id = ["3", "396", "499", "678", "1133", "1168", "1966", "100874", "100954", "100955"]
     workshop_id = ["3"]
     hours = ["8:00AM - 11:00AM", "11:00AM - 2:00PM", "2:00PM - 5:00PM", "5:00PM - 8:00PM"]
