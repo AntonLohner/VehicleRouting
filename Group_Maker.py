@@ -38,11 +38,6 @@ def group_maker():
                 print("No data for this workshop and time.")
     # print(json_data["data"][z]["3"])
     package = example_return["data"]["2019-07-12"]["3"]
-
     return package
 
-    # TODO: Add a warning if there's too many customers in a zone, which would cause an increase in google api costs.
-    # TODO: Only for the general sorting, which we'll compare to a couple more subtle approaches.
-
-    # TODO: Ask for the Json to be updated to include Lat/Long
 

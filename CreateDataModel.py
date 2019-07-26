@@ -1,27 +1,12 @@
+from DataModelMaker import DataModelInput
 
-def create_data_model():
-    data = {'time_matrix': [[0.0, 957.0, 1876.0, 1981.0, 1827.0, 646.0, 680.0, 1533.0, 618.0, 819.0, 1181.0],
-                             [957.0, 0.0, 2011.0, 2072.0, 2100.0, 918.0, 280.0, 1217.0, 718.0, 405.0, 1448.0],
-                             [1876.0, 2011.0, 0.0, 220.0, 585.0, 1512.0, 1784.0, 1210.0, 1915.0, 1685.0, 981.0],
-                             [1981.0, 2072.0, 220.0, 0.0, 654.0, 1581.0, 1853.0, 1355.0, 1984.0, 1747.0, 1141.0],
-                             [1827.0, 2100.0, 585.0, 654.0, 0.0, 1577.0, 1849.0, 1311.0, 1980.0, 1980.0, 1026.0],
-                             [646.0, 918.0, 1512.0, 1581.0, 1577.0, 0.0, 568.0, 1595.0, 699.0, 922.0, 899.0],
-                             [680.0, 280.0, 1784.0, 1853.0, 1849.0, 568.0, 0.0, 1095.0, 472.0, 269.0, 1171.0],
-                             [1533.0, 1217.0, 1210.0, 1355.0, 1311.0, 1595.0, 1095.0, 0.0, 1522.0, 891.0, 1607.0],
-                             [618.0, 718.0, 1915.0, 1984.0, 1980.0, 699.0, 472.0, 1522.0, 0.0, 650.0, 1303.0],
-                             [819.0, 405.0, 1685.0, 1747.0, 1980.0, 922.0, 269.0, 891.0, 650.0, 0.0, 1408.0],
-                             [1181.0, 1448.0, 981.0, 1141.0, 1026.0, 899.0, 1171.0, 1607.0, 1303.0, 1408.0, 0.0]],
-            'num_vehicles': 4, 'depot': 0, 'demands': [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
-            'time_windows': [(0, 60000), (0, 60000), (0, 60000), (0, 60000), (0, 60000), (0, 60000), (0, 60000),
-                             (0, 60000), (0, 60000), (0, 60000),
-                             (0, 60000),
-                             ], 'vehicle_capacities': [20, 20, 20, 20],
-            'location_names': ["depot", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", ]}
 
+def create_data_model(time_matrix, total_num_vehicles):
+    data = DataModelInput(time_matrix, total_num_vehicles)
     return data
 
 # num_vehicles: len(time_matrix)
 # no demands or vehicle capacities?
-# TODO: Num_vehicles as an input, Capacities as an input. demands as an input, time windows as an input.
+# TODO: Capacities as an input. demands as an input, time windows as an input.
 # Vehicle_Handler
 # Time windows and demands are inbuilt into the API handler.

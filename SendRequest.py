@@ -21,6 +21,5 @@ def send_request(origin_addresses, dest_addresses, API_key):
     response = requests.get(request)
     json_data = response.json()
     return json_data
-    # TODO: We need to add an exponential back off delay, if the flat one takes too long.
 
 

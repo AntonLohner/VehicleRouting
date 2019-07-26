@@ -24,7 +24,6 @@ def matrix_shaper(base_matrix, i, q, request, destination_count, origin_count):
     x = 1
     incremental_counter = 0
     time.sleep(.1/4)
-    # TODO: The sleep time can go lower or higher depending on how long the code takes to execute.
     response = requests.get(request)
     json_data = response.json()
     for row in json_data['rows']:

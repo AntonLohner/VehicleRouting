@@ -5,11 +5,11 @@ from CreateDataModel import create_data_model
 from PrintSolution import print_solution
 
 
-def main():
+def main(data_model, coords):
     """Solve the problem."""
     # Create the data for the problem.
 
-    data = create_data_model()
+    data = data_model
     print("ok")
     # Create the routing index manager.
     manager = pywrapcp.RoutingIndexManager(
@@ -103,6 +103,9 @@ def main():
 
     # Print solution on console.
     if solution:
-        print_solution(data, manager, routing, solution)
+        print_solution(data, manager, routing, solution, coords)
     print("ok15")
+
+if __name__ == '__main__':
+    main()
 
