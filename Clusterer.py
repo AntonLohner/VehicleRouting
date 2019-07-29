@@ -30,13 +30,14 @@ def clusterer(input_data):
         if input_data[user_input][i]['latitude'] == "":
             ""
         else:
-            # TODO: Consider if this is necessary nowadays.
+            # Something that would be interesting to consider is using this filter to remove points that would be
+            # incredibly distant from the hub, sending 3rd parties there automatically instead.
             if 23 < float(input_data[user_input][i]['latitude']) < 27 and -97 > \
                     float(input_data[user_input][i]['longitude']) > -103:
                 lats.append(float(input_data[user_input][i]['latitude']))
                 lons.append(float(input_data[user_input][i]['longitude']))
         i = i + 1
-    # Set the problem. Add the target coordinates. These will be lats/longs, I assume.
+    # Set the problem. Add the target coordinates.
     # Currently, this more or less targets the coordinates that qualify inside Mty
     df = pd.DataFrame({
         'x': lats,
@@ -45,10 +46,9 @@ def clusterer(input_data):
     # Calculates the amount of clusters we want
     num_clusters = input("How many clusters? Ex: 5 ")
     num_clusters = int(num_clusters)
-    #num_clusters = math.ceil(len(lats)/20)
+    # num_clusters = math.ceil(len(lats)/20)
     # Splits the data into the clusters
     kmeans = KMeans(n_clusters=num_clusters, n_jobs=1)
-    # TODO: Optional due to google api restriction forcing us to overfit: Use elbow method to predict n_clusters
     kmeans.fit(df)
 
     labels = kmeans.predict(df)
@@ -88,7 +88,7 @@ def clusterer(input_data):
 
     # Iterates through labels. The first for deletes the target clusters, while the second one splits the big ones into
     # Clusters of hopefully 20-30. If a cluster was bigger than 50 we'd be in trouble, but we're handling data sets of
-    # about 100, so the odds of that are... pretty much 0. Something TODO: If time allows.
+    # about 100, so the odds of that are... pretty much 0.
     big_node_lats = []
     big_node_lons = []
 
@@ -103,7 +103,6 @@ def clusterer(input_data):
     while i < len(labels):
         for x in target_list:
             if labels[i] == x:
-                #print("delet this")
                 # TODO: Note the fallen
                 del labels[i]
                 del lons[i]
@@ -111,10 +110,8 @@ def clusterer(input_data):
                 i = i - 1
         for y in splitter_list:
             if labels[i] == y:
-                #print("The bigger they are, the harder they fall.")
                 big_node_lons.append(lons[i])
                 big_node_lats.append(lats[i])
-                # This is the part where we do stuff
                 del labels[i]
                 del lons[i]
                 del lats[i]
@@ -122,15 +119,14 @@ def clusterer(input_data):
         counter = counter + 1
         i = i + 1
 
-    # We create two clusters out of the big clusters, in order to reduce the number of addresses required in the google API.
-    # TODO: If we have the time, i'd like to just have it iterate infinitely as long as it doesn't create clusters that are
-    # TODO: small enough.
+# We create two clusters out of the big clusters, in order to reduce the number of addresses required in the google API.
     df2 = pd.DataFrame({
         'x': big_node_lats,
         'y': big_node_lons
     })
 
     colors = list(map(lambda x: colmap[x+1], labels))
+# Checks if we have clusters to split, and splits them if so.
     if len(big_node_lons) > 2:
         kmeans2 = KMeans(n_clusters=len(splitter_list)*2, n_jobs=1)
         kmeans2.fit(df2)
@@ -167,11 +163,6 @@ def clusterer(input_data):
         # Colors em!
         plt.scatter(x, y, color=colors2, alpha=0.5, edgecolor='k')
 
-    #print(cluster_dict)
-    #{0: 12, 1: 14, 2: 35, 3: 11, 4: 9, 5: 11, 6: 17, 7: 35, 8: 26, 9: 13, 10: 47, 11: 3, 12: 10, 13: 18, 14: 5, 15: 20, 16: 25, 17: 34}
-    #[2, 7, 10, 11, 17]
-    #print(global_list)
-
     # Plots the nodes
     x, y = basemap(centroid_lats, centroid_lons)
     i = 0
@@ -206,13 +197,12 @@ def clusterer(input_data):
         coord_dict[labels[i]].append([lats[i], lons[i]])
     # Adds a fancy map background :0
     basemap.arcgisimage(service='World_Street_Map', xpixels=2500, verbose=False)
-    # TODO: This is a really neat way to draw lines. Might be useful very soon. basemap.plot(x, y)
-    # TODO: Ask how aggressive we want to be in dropping the points that are very far away.
-    # TODO: Repeating the clustering 10x and dropping each time would work.
+    # This is a really neat way to draw lines. Might be useful someday. basemap.plot(x, y)
+    # Depending on how aggressive we want to be in dropping the points that are very far away.
+    # Repeating the clustering 10x and dropping each time would work.
     plt.show()
     print(coord_dict)
     return coord_dict
 
-# TODO: If time, we need to split the city into geographic centers.
-# TODO: More useful, try to split the big clusters using iterations
+# Another interesting way to make clustering slightly more efficient is to split the city into geographic centers.
 

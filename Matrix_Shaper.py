@@ -2,23 +2,6 @@ import numpy as np
 import requests
 import time
 
-'''
-matrix = np.zeros((20, 20))
-matrix2 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-print(matrix)
-print(matrix2)
-incremental_counter = 0
-for x in range(10):
-    for j in range(10):
-        j = j
-        duration = matrix2[j]
-        matrix[9-9+incremental_counter, 19-9+j] = duration
-        matrix[19 - 9 + j, 9 - 9 + incremental_counter] = duration
-    incremental_counter = incremental_counter + 1
-print(matrix)
-print(type(matrix))
-'''
-
 
 def matrix_shaper(base_matrix, i, q, request, destination_count, origin_count):
     x = 1
@@ -26,17 +9,20 @@ def matrix_shaper(base_matrix, i, q, request, destination_count, origin_count):
     time.sleep(.1/4)
     response = requests.get(request)
     json_data = response.json()
+    # Sends a response, limited by the google API's requests per second limit.
     for row in json_data['rows']:
         for j in range(len(json_data['destination_addresses'][:])):
             duration = [row['elements'][j]['duration']['value']]
             while json_data['rows'][0]['elements'][0]['status'][:] != 'OK':
                 print("Status is not OK:", i, q)
+                # If there's an error, delays the next request.
                 time.sleep(2**x)
                 response = requests.get(request)
                 json_data = response.json()
                 x = x + 1
                 if x == 5:
                     break
+            # Adds the 10 by 10 matrix into the square it goes in, and then does the same for it's "mirror reflection"
             base_matrix[i-origin_count+incremental_counter, q-destination_count+j] = duration[0]
             base_matrix[q-destination_count+j, i-origin_count+incremental_counter] = duration[0]
         incremental_counter = incremental_counter + 1

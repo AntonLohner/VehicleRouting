@@ -6,12 +6,8 @@ from key import key1
 
 def create_distance_matrix(data):
     key = key1
-    # TODO: REPLACE THE KEY
     # We have a maximum of 100 elements per request, so we're splitting the rows to fit that restriction
-    # TODO: When data is replaced, this will change
     addresses = data
-    # TODO: This won't work. We're going to need to somehow figure out a mathematical way to split by 100s.
-    # TODO: Because of the nature of the matrix, I can split the requests in half if i can figure out a way to build
     num_addresses = len(addresses)
     max_rows = int(math.floor(100./num_addresses))
     # q = number of full rows, while r = the remainder

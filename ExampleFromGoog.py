@@ -3,6 +3,7 @@
 from __future__ import print_function
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
+# An example from Google, with an example distance matrix, useful if you need to compare to the current implementation.
 
 
 def create_data_model():
@@ -125,7 +126,6 @@ def main():
     # Create Routing Model.
     routing = pywrapcp.RoutingModel(manager)
 
-
     # Create and register a transit callback.
     def distance_callback(from_index, to_index):
         """Returns the distance between the two nodes."""
@@ -138,7 +138,6 @@ def main():
 
     # Define cost of each arc.
     routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
-
 
     # Add Capacity constraint.
     def demand_callback(from_index):

@@ -1,15 +1,7 @@
-What will our program need? : Option 1) We take the adresses given to us by the server, 
 
 Capacity Constraints - Number of cars, how much they can pick up.
 Time Windows - When and Where the packages need to be delivered.
 Places to go - A time matrix of different locations, hopefully delivered by google maps API
-
-
-What will our program do? :
-
-What libraries do you think will be useful? :
-
-What are the decisions that must be taken? : Time vs Precision, 
 
 
 Inputs-
@@ -46,10 +38,6 @@ Step 4: Resource Constraints (Loading, mostly) (https://developers.google.com/op
 Step 5: Do we need to add drop penalties? Do we even drop packages? - Might have to when we add time windows.
 Step 6: Search limits, solution limits, time limits. Do we want to input an initial route? Probably not, but who knows?
 
-
-Q:
-
-How does accessing a file work in a server?
 
 
 

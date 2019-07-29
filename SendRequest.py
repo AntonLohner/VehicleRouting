@@ -10,7 +10,7 @@ def send_request(origin_addresses, dest_addresses, API_key):
         for i in range(len(addresses)-1):
             address_str += addresses[i] + '|'
         address_str += addresses[-1]
-        # Adds the last address. I'm not sure why it's needed, though. Seems weird.
+        # Adds the last address.
         return address_str
     request = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
     origin_address_str = build_address_str(origin_addresses)

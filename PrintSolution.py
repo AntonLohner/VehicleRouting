@@ -56,9 +56,8 @@ def print_solution(data, manager, routing, solution, coords):
                     i = 0
                 new_path = False
             paths = paths + "%7C{}\n".format(tempdata[str(manager.IndexToNode(index))])
-            # We create the paths here.
-            # TODO: Consider adding the final return to the hub. Better colour? Transparency? They might want a dynamic
-            # map instead.
+            # We create the paths here. I'm not really sure what would be a viable way to map these points, as
+            # dynamic maps from google are only javascript, so it's hard to print 8 of them when needed.
             previous_index = index
             index = solution.Value(routing.NextVar(index))
             route_time += routing.GetArcCostForVehicle(

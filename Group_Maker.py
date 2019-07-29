@@ -30,11 +30,9 @@ def group_maker():
             try:
                 print("Workshop: " + i)
                 print("Hour: " + j)
-                # print(str(len(json_data["data"][z][i][j])) + " locations found")
                 print(str(len(json_data["data"][z][i][j])) + " locations found")
             except KeyError:
                 print("No data for this workshop and time.")
-    # print(json_data["data"][z]["3"])
     package = json_data["data"][z]["3"]
     return package
 

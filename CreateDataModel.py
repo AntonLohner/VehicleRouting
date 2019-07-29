@@ -1,12 +1,25 @@
-from DataModelMaker import DataModelInput
 
 
 def create_data_model(time_matrix, total_num_vehicles):
-    data = DataModelInput(time_matrix, total_num_vehicles)
+    demands = [0]
+    vehicle_capacities = []
+    location_names = ["depot"]
+    x = 0
+    i = 0
+    while x < total_num_vehicles:
+        vehicle_capacities.append(20)
+        x = x + 1
+    time_windows = []
+    while i < len(time_matrix):
+        time_windows.append((0, 60000))
+        if i > 0:
+            demands.append(1)
+            location_names.append(str(i))
+        i = i + 1
+    data = {'time_matrix': time_matrix,
+            'num_vehicles': total_num_vehicles, 'depot': 0, 'demands': demands,
+            'time_windows': time_windows,
+            'vehicle_capacities': vehicle_capacities,
+            'location_names': location_names
+            }
     return data
-
-# num_vehicles: len(time_matrix)
-# no demands or vehicle capacities?
-# TODO: Capacities as an input. demands as an input, time windows as an input.
-# Vehicle_Handler
-# Time windows and demands are inbuilt into the API handler.
