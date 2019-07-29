@@ -2,7 +2,6 @@ import json
 import requests
 from link import link
 import datetime
-from request_12_07 import A
 
 
 def group_maker():
@@ -13,7 +12,6 @@ def group_maker():
     fecha = input("Que fecha deseas? Ej: 2019-07-12 No input -> Hoy")
     if fecha != "":
         z = fecha
-    example_return = A
     example_link = str(link) + "date_from=" + z + "%2000:00:00&date_to=" + z + "%2023:59:59"
     response = requests.get(example_link)
     json_data = response.json()
@@ -33,11 +31,11 @@ def group_maker():
                 print("Workshop: " + i)
                 print("Hour: " + j)
                 # print(str(len(json_data["data"][z][i][j])) + " locations found")
-                print(str(len(example_return["data"]["2019-07-12"][i][j])) + " locations found")
+                print(str(len(json_data["data"][z][i][j])) + " locations found")
             except KeyError:
                 print("No data for this workshop and time.")
     # print(json_data["data"][z]["3"])
-    package = example_return["data"]["2019-07-12"]["3"]
+    package = json_data["data"][z]["3"]
     return package
 
 
