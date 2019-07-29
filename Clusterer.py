@@ -16,7 +16,7 @@ def clusterer(input_data):
     centroid_lats = []
 
     user_input = input("Que horario? 1-> 8:00AM - 11:00AM, 2 -> 11:00AM - 2:00PM 3 -> 2:00PM - "
-                       "5:00PM 4-> 5:00PM - 8:00PM")
+                       "5:00PM 4-> 5:00PM - 8:00PM ")
     if user_input == "1":
         user_input = "8:00AM - 11:00AM"
     if user_input == "2":
@@ -43,7 +43,9 @@ def clusterer(input_data):
         'y': lons
     })
     # Calculates the amount of clusters we want
-    num_clusters = math.ceil(len(lats)/20)
+    num_clusters = input("How many clusters? Ex: 5 ")
+    num_clusters = int(num_clusters)
+    #num_clusters = math.ceil(len(lats)/20)
     # Splits the data into the clusters
     kmeans = KMeans(n_clusters=num_clusters, n_jobs=1)
     # TODO: Optional due to google api restriction forcing us to overfit: Use elbow method to predict n_clusters
@@ -64,17 +66,18 @@ def clusterer(input_data):
     for i in cluster_dict:
         if cluster_dict[i] > 50:
             user_input = input("Warning, there's a 50+ cluster. This would result in a probable 30+ distance matrix. "
-                               "Are you sure you want to continue? Y or N")
+                               "Are you sure you want to continue? Y or N ")
             if user_input != "Y":
                 sys.exit("Program stopped by user.")
 
     # We note which clusters we want to split and which ones we want to delete
     splitter_list = []
     target_list = []
+    print(cluster_dict)
     for i in cluster_dict:
         if cluster_dict[i] < 5:
-            #print("Cluster too small")
-            #print(i)
+            print("Cluster too small")
+            print(i)
             target_list.append(i)
         if cluster_dict[i] > 30:
             #print("Cluster too big")
@@ -198,7 +201,7 @@ def clusterer(input_data):
         lons = lons + big_node_lons
     coord_dict = {}
     for i in labels:
-        coord_dict.update({i: []})
+        coord_dict.update({i: [[25.680723,-100.365837]]})
     for i in range(0, len(lats)):
         coord_dict[labels[i]].append([lats[i], lons[i]])
     # Adds a fancy map background :0

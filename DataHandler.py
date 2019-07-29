@@ -104,16 +104,18 @@ def data_handler(coords):
 ######################
 coord_dict = []
 pack = group_maker()
-cluster_input = input("Are we making clusters? 1-> Yes. 2-> No")
+cluster_input = input("Are we making clusters? 1-> Yes. 2-> No ")
 if cluster_input != "2":
-    coord_dict = clusterer(pack)
-
+    pause = "1"
+    while pause == "1":
+        coord_dict = clusterer(pack)
+        pause = input("Redo? 1 = yes")
 key = key1
 Coords = ['25.680723,-100.365837']
 
 if coord_dict == []:
     user_input = input("Que horario? 1-> 8:00AM - 11:00AM, 2 -> 11:00AM - 2:00PM 3 -> 2:00PM - "
-                       "5:00PM 4-> 5:00PM - 8:00PM")
+                       "5:00PM 4-> 5:00PM - 8:00PM ")
     if user_input == "1":
         user_input = "8:00AM - 11:00AM"
     if user_input == "2":
@@ -123,7 +125,6 @@ if coord_dict == []:
     if user_input == "4":
         user_input = "5:00PM - 8:00PM"
     p = 0
-    print(pack[user_input])
     while p < len(pack[user_input]):
         if pack[user_input][p]['latitude'] == "":
             ""
@@ -138,10 +139,10 @@ if coord_dict == []:
         p = p + 1
     matrix_dict = {}
     matrix_dict.update({0: []})
-    print(matrix_dict)
     closeit = input("Please double check.")
     matrix = data_handler(Coords)
     matrix_dict[0].append(matrix)
+    print(matrix_dict)
 else:
     x = 0
     matrix_dict = {}
@@ -156,17 +157,20 @@ else:
         Coords = ['25.680723,-100.365837']
         x = 0
     print(matrix_dict)
-    total_num_vehicles = 7
+redo = "y"
+while redo == "y":
     for i in matrix_dict:
+        total_num_vehicles = 6
         model_matrix = matrix_dict[i][0]
         if coord_dict == []:
             data_model = create_data_model(model_matrix, total_num_vehicles)
             main(data_model, Coords)
         else:
-            data_model = create_data_model(model_matrix, total_num_vehicles/len(coord_dict.keys()))
-            for z in coord_dict:
-                main(data_model, coord_dict[z])
-        # TODO: Double check these two work. Should work, just double check.
+            total_num_vehicles = 1
+            data_model = create_data_model(model_matrix, total_num_vehicles)
+            main(data_model, coord_dict[i])
+    redo = input("Do you want to retry the OR Solution? y = yes ")
+    i = 0
 
     # matrix_dict
 
