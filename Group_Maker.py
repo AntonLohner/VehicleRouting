@@ -9,7 +9,7 @@ def group_maker():
     x = datetime.datetime.now()
     y = str(x)
     z = y[0:10]
-    fecha = input("Que fecha deseas? Ej: 2019-07-12 No input -> Hoy")
+    fecha = input("Que fecha deseas? Ej: 2019-07-12 No input -> Hoy ")
     if fecha != "":
         z = fecha
     example_link = str(link) + "date_from=" + z + "%2000:00:00&date_to=" + z + "%2023:59:59"
@@ -17,7 +17,6 @@ def group_maker():
     json_data = response.json()
     if json_data['result'] != "ok":
         print("Request result failed")
-    print(json_data)
     # workshop_id = ["3", "396", "499", "678", "1133", "1168", "1966", "100874", "100954", "100955"]
     workshop_id = ["3"]
     hours = ["8:00AM - 11:00AM", "11:00AM - 2:00PM", "2:00PM - 5:00PM", "5:00PM - 8:00PM"]

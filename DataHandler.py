@@ -138,7 +138,6 @@ if coord_dict == []:
         if pack[user_input][p]['latitude'] == "":
             ""
         else:
-            # TODO: Consider if this is necessary nowadays.
             if 23 < float(pack[user_input][p]['latitude']) < 27 and -97 > \
                     float(pack[user_input][p]['longitude']) > -103:
                 Coords.append((pack[user_input][p]['latitude'] + ',' + pack[user_input][p]['longitude']))
@@ -153,7 +152,6 @@ if coord_dict == []:
     matrix_dict.update({0: []})
     matrix = data_handler(Coords)
     matrix_dict[0].append(matrix)
-    print(matrix_dict)
 else:
     x = 0
     # Makes a matrix dict and appends nodes:matrices to it.
