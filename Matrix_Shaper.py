@@ -2,7 +2,8 @@ import numpy as np
 import requests
 import time
 
-
+# Because the google OR tool required a distance matrix, and google maps had a limit of 100 points per request, i'd make distance matrixes and stich them 
+# to make the complete matrix, which would then be solved by OR tools.
 def matrix_shaper(base_matrix, i, q, request, destination_count, origin_count):
     x = 1
     incremental_counter = 0
