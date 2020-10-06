@@ -5,6 +5,7 @@ import time
 
 def send_request(origin_addresses, dest_addresses, API_key):
     # Appends addresses to a single string, adding | in between.
+    # I didn't have access to the database, so they essentially gave me a URL where I could download a csv with the orders of the day.
     def build_address_str(addresses):
         address_str = ''
         for i in range(len(addresses)-1):
